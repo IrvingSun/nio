@@ -44,6 +44,32 @@ public class ChannelDemo {
         inputStreamChannel.close();
     }
 
+    static void fileChannelTransfer() throws Exception{
+        File file = new File("file1.txt");
+        FileInputStream fileInputStream = new FileInputStream(file);
+        FileChannel inputStreamChannel = fileInputStream.getChannel();
+
+        FileOutputStream fileOutputStream = new FileOutputStream("file2.txt");
+        FileChannel outputStreamChannel = fileOutputStream.getChannel();
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+
+        inputStreamChannel.read(byteBuffer);
+
+        inputStreamChannel.transferTo(0, byteBuffer.position(), outputStreamChannel);
+//        byteBuffer.flip();
+//        outputStreamChannel.write(byteBuffer);
+
+        fileOutputStream.close();
+        fileInputStream.close();
+        outputStreamChannel.close();
+        inputStreamChannel.close();
+    }
+
+    /**
+     * 通过transferTo方法将数据从 源channel到 目标channel
+     * @throws Exception
+     */
     static void socketChannel() throws Exception{
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6666);
@@ -64,8 +90,8 @@ public class ChannelDemo {
 
     public static void main(String[] args) throws Exception{
 //        fileChannel();
-
-        socketChannel();
+//        socketChannel();
+        fileChannelTransfer();
     }
 
 }
