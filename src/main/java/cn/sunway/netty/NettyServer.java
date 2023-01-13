@@ -35,7 +35,8 @@ public class NettyServer {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024)); //基于换行符处理半包粘包
-                    socketChannel.pipeline().addLast(new StringDecoder(Charset.forName("UTF-8")));//解码UTF-8  处理消息时就可以直接使用字符串了，不需要强转
+//                    socketChannel.pipeline().addLast(new StringDecoder(Charset.forName("UTF-8")));//解码UTF-8  处理消息时就可以直接使用字符串了，不需要强转
+                    socketChannel.pipeline().addLast(new MyDecoder());//处理粘包半包解码器
                     socketChannel.pipeline().addLast(new StringEncoder(Charset.forName("UTF-8")));//编码UTF-8  发送消息时就可以直接使用字符串了，不需要强转
                     socketChannel.pipeline().addLast(new MyServerHandler());
                 }
